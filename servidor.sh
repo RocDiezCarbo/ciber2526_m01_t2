@@ -1,6 +1,6 @@
-#/bin/bash
+#!/bin/bash
 
-VERSION_CURRENT="0.7"
+VERSION_CURRENT="0.8"
 
 PORT="9999"
 IP_CLIENT="localhost"
@@ -56,7 +56,7 @@ then
 fi
 
 
-IP_CLIENT_HASH=`echo $DATA | cut -d " " -fgit@github.com:RocDiezCarbo/ciber2526_m01_t2.git 4`
+IP_CLIENT_HASH=`echo $DATA | cut -d " " -f 4`
 
 IP_CLIENT_HASH_TEST=`echo "$IP_CLIENT" | md5sum | cut -d " " -f 1`
 
@@ -89,11 +89,26 @@ then
 
     sleep 1
     echo "FILE_NAME_KO" | nc $IP_CLIENT -q 0 $PORT
-
     exit 3
 fi
 
 FILE_NAME=`echo $DATA | cut -d " " -f 2`
+
+if [ "$FILE_NAME" == "" ]
+then
+	echo "Error 3: Nombre de archivo vacío"
+	exit 3
+fi
+AUDIO_FILE_NAME_HASH=`echo $DATA | cut -d " " -f 3`
+
+AUDIO_FILE_NAME_HASH_TEST=`echo "$FILE_NAME" | md5sum | cut -d " " -f 1`
+
+if [ "$FILE_NAME_HASH" != "$FILE_NAME_HASH_TEST" ]
+then 
+	echo "Error 3h: Hash del nombre de archivo erróneo"
+	exit 3
+fi
+
 
 echo "File Name: $FILE_NAME"
 
